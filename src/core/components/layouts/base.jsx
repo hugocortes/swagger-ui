@@ -20,6 +20,12 @@ export default class BaseLayout extends React.Component {
     this.props.layoutActions.updateFilter(value)
   }
 
+  onSelectedAppNameChange = (e) => {
+    let { authActions } = this.props
+
+    authActions.selectAppName(e.target.value)
+  }
+
   render() {
     let {
       specSelectors,
@@ -27,7 +33,8 @@ export default class BaseLayout extends React.Component {
       getComponent,
       layoutSelectors,
       oas3Selectors,
-      oas3Actions
+      oas3Actions,
+      authSelectors
     } = this.props
 
     let info = specSelectors.info()
@@ -98,6 +105,18 @@ export default class BaseLayout extends React.Component {
                       schemes={ schemes }
                       specActions={ specActions } />
                   ) : null }
+
+                  <label>Your Apps<br/>
+                    <select name="selectedAppName" onChange={this.onSelectedAppNameChange} value={authSelectors.getSelectedAppName()}>
+                      {
+                        authSelectors.getAllConfigs()
+                          .map((value)=> {
+                            return ( <option key={value.appName}>{value.appName}</option>)
+                          })
+
+                      }
+                    </select>
+                  </label>
 
                   { securityDefinitions ? (
                     <AuthorizeBtn />

@@ -7,23 +7,39 @@ export default class BasicAuth extends React.Component {
     authorized: PropTypes.object,
     getComponent: PropTypes.func.isRequired,
     schema: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    authSelectors: PropTypes.object.isRequired
   }
 
   constructor(props, context) {
     super(props, context)
-    let { schema, name } = this.props
-
-    let value = this.getValue()
-    let username = value.username
+    let { schema, name, authSelectors } = this.props
+    let authConfigs = authSelectors.getConfigs() || {}
+    let username = this.getValue().username || authConfigs.username || ""
+    let password = authConfigs.password || ""
 
     this.state = {
       name: name,
       schema: schema,
       value: !username ? {} : {
-        username: username
+        username: username,
+        password: password
       }
     }
+
+    this.onChange({
+      target: {
+        value: username,
+        name: "username"
+      }
+    })
+
+    this.onChange({
+      target: {
+        value: password,
+        name: "password"
+      }
+    })
   }
 
   getValue () {
@@ -65,19 +81,31 @@ export default class BasicAuth extends React.Component {
         <Row>
           <label>Username:</label>
           {
-            username ? <code> { username } </code>
-                     : <Col><Input type="text" required="required" name="username" onChange={ this.onChange }/></Col>
+            username
+              ? <code> { this.state.value.username } </code>
+              : <Col>
+                  <Input
+                    type="text"
+                    required="required"
+                    value={ this.state.value.username }
+                    name="username"
+                    onChange={ this.onChange }/>
+                </Col>
           }
         </Row>
         <Row>
           <label>Password:</label>
             {
-              username ? <code> ****** </code>
-                       : <Col><Input required="required"
-                                     autoComplete="new-password"
-                                     name="password"
-                                     type="password"
-                                     onChange={ this.onChange }/></Col>
+              username
+                ? <code> ****** </code>
+                : <Col>
+                    <Input
+                      type="password"
+                      required="required"
+                      value={ this.state.value.password }
+                      name="password"
+                      onChange={ this.onChange }/>
+                  </Col>
             }
         </Row>
         {

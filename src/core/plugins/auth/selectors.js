@@ -88,7 +88,24 @@ export const isAuthorized = ( state, securities ) => ( { authSelectors } ) => {
     }).length
 }
 
+export const getAllConfigs = createSelector(
+  state,
+  auth => auth.get( "configs" )
+)
+
+export const getSelectedAppName = createSelector(
+  state,
+  auth => {
+    let selectedAppName = auth.get("selectedAppName") || auth.get("configs")[0].appName
+    return selectedAppName
+  }
+)
+
 export const getConfigs = createSelector(
-    state,
-    auth => auth.get( "configs" )
+  getAllConfigs,
+  getSelectedAppName,
+  (configs, selectedAppName) => {
+    let config = configs.find((value) => value.appName === selectedAppName)
+    return config
+  }
 )
