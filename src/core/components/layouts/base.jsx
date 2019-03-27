@@ -9,7 +9,8 @@ export default class BaseLayout extends React.Component {
     specSelectors: PropTypes.object.isRequired,
     oas3Selectors: PropTypes.object.isRequired,
     oas3Actions: PropTypes.object.isRequired,
-    getComponent: PropTypes.func.isRequired
+    getComponent: PropTypes.func.isRequired,
+    authSelectors: PropTypes.object.isRequired
   }
 
   onFilterChange =(e) => {
@@ -24,7 +25,7 @@ export default class BaseLayout extends React.Component {
   }
 
   render() {
-    let {errSelectors, specSelectors, getComponent} = this.props
+    let {errSelectors, specSelectors, getComponent, authSelectors} = this.props
 
     let SvgAssets = getComponent("SvgAssets")
     let InfoContainer = getComponent("InfoContainer", true)
