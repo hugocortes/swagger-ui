@@ -62,8 +62,8 @@ export default function authorize ( { auth, authActions, errActions, configs, au
 
   query.push("state=" + encodeURIComponent(state))
 
-  if (typeof authConfigs.realm !== "undefined") {
-    query.push("realm=" + encodeURIComponent(authConfigs.realm))
+  if (typeof auth.realm !== "undefined") {
+    query.push("realm=" + encodeURIComponent(auth.realm))
   }
 
   let { additionalQueryStringParams } = authConfigs

@@ -94,6 +94,10 @@ export const authorizePassword = ( auth ) => ( { authActions } ) => {
       console.warn(`Warning: invalid passwordType ${passwordType} was passed, not including client id and secret`)
   }
 
+  if (auth.realm) {
+    form.realm = auth.realm;
+  }
+
   return authActions.authorizeRequest({ body: buildFormData(form), url: schema.get("tokenUrl"), name, headers, query, auth})
 }
 
@@ -117,6 +121,10 @@ export const authorizeApplication = ( auth ) => ( { authActions } ) => {
     scope: scopes.join(scopeSeparator)
   }
 
+  if (auth.realm) {
+    form.realm = auth.realm;
+  }
+
   return authActions.authorizeRequest({body: buildFormData(form), name, url: schema.get("tokenUrl"), auth, headers })
 }
 
@@ -128,6 +136,10 @@ export const authorizeAccessCodeWithFormParams = ( { auth, redirectUrl } ) => ( 
     client_id: clientId,
     client_secret: clientSecret,
     redirect_uri: redirectUrl
+  }
+
+  if (auth.realm) {
+    form.realm = auth.realm;
   }
 
   return authActions.authorizeRequest({body: buildFormData(form), name, url: schema.get("tokenUrl"), auth})
@@ -143,6 +155,10 @@ export const authorizeAccessCodeWithBasicAuthentication = ( { auth, redirectUrl 
     code: auth.code,
     client_id: clientId,
     redirect_uri: redirectUrl
+  }
+
+  if (auth.realm) {
+    form.realm = auth.realm;
   }
 
   return authActions.authorizeRequest({body: buildFormData(form), name, url: schema.get("tokenUrl"), auth, headers})

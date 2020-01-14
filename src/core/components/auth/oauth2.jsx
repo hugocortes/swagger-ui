@@ -171,6 +171,24 @@ export default class Oauth2 extends React.Component {
               </Row>
             </Row>
         }
+
+        {
+          !isAuthorized && <Row>
+            <label htmlFor="realm">realm:</label>
+            {
+              isAuthorized  ? <code> { this.state.realm } </code>
+                            : <Col tablet={10} desktop={10}>
+                                <input id="realm"
+                                  type="text"
+                                  required={ flow === PASSWORD }
+                                  value={ this.state.realm }
+                                  data-name="realm"
+                                  onChange={ this.onInputChange }/>
+                              </Col>
+            }
+          </Row>
+        }
+
         {
           ( flow === APPLICATION || flow === IMPLICIT || flow === ACCESS_CODE || flow === PASSWORD ) &&
           ( !isAuthorized || isAuthorized && this.state.clientId) && <Row>
