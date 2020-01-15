@@ -28,6 +28,7 @@ export default class Oauth2 extends React.Component {
 
     this.state = {
       appName: authConfigs.appName,
+      realm: authConfigs.realm,
       name: name,
       schema: schema,
       scopes: [],
