@@ -121,13 +121,14 @@ export const authorizeApplication = ( auth ) => ( { authActions } ) => {
 }
 
 export const authorizeAccessCodeWithFormParams = ( { auth, redirectUrl } ) => ( { authActions } ) => {
-  let { schema, name, clientId, clientSecret } = auth
+  let { schema, name, clientId, clientSecret, codeVerifier } = auth
   let form = {
     grant_type: "authorization_code",
     code: auth.code,
     client_id: clientId,
     client_secret: clientSecret,
-    redirect_uri: redirectUrl
+    redirect_uri: redirectUrl,
+    code_verifier: codeVerifier
   }
 
   return authActions.authorizeRequest({body: buildFormData(form), name, url: schema.get("tokenUrl"), auth})
@@ -156,7 +157,8 @@ export const authorizeRequest = ( data ) => ( { fn, getConfigs, authActions, err
   let parsedUrl
 
   if (specSelectors.isOAS3()) {
-    parsedUrl = parseUrl(url, oas3Selectors.selectedServer(), true)
+    const server = oas3Selectors.selectedServer()
+    parsedUrl = parseUrl(url, oas3Selectors.serverEffectiveValue({ server }), true)
   } else {
     parsedUrl = parseUrl(url, specSelectors.url(), true)
   }
